@@ -1,5 +1,48 @@
 {
-    "users": [],
-    "posts": [],
-    "comments": []
+    "users": [
+        {
+            "id": "1",
+            "username": "user1",
+            "email": "user1@example.com",
+            "password": "hashed_password1"
+        },
+        {
+            "id": "2",
+            "username": "user2",
+            "email": "user2@example.com",
+            "password": "hashed_password2"
+        }
+    ],
+    "posts": [
+        {
+            "id": "1",
+            "user_id": "1",
+            "title": "First Post",
+            "content": "This is the content of the first post.",
+            "created_at": "2024-05-31T10:00:00Z"
+        },
+        {
+            "id": "2",
+            "user_id": "2",
+            "title": "Second Post",
+            "content": "This is the content of the second post.",
+            "created_at": "2024-05-31T12:00:00Z"
+        }
+    ],
+    "comments": [
+        {
+            "id": "1",
+            "post_id": "1",
+            "user_id": "2",
+            "content": "This is a comment on the first post.",
+            "created_at": "2024-05-31T11:00:00Z"
+        },
+        {
+            "id": "2",
+            "post_id": "2",
+            "user_id": "1",
+            "content": "This is a comment on the second post.",
+            "created_at": "2024-05-31T13:00:00Z"
+        }
+    ]
 }
