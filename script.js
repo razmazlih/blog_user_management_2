@@ -1,5 +1,15 @@
 const url = "http://localhost:3000/"
 
+function theDate() {
+    const nowTime = (new Date()).toLocaleString('en-IL', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    return nowTime;
+}
 // return all users
 async function getUsers() {
     let allUsers;
@@ -14,8 +24,8 @@ async function getUsers() {
         })
         .catch(error => {
             alert("Server Error: " + error)
-        })
-    return allUsers
+        });
+    return allUsers;
 }
 
 async function login() {
@@ -94,7 +104,7 @@ async function signUp() {
             myData = data;
         })
         .catch(error => {
-            console.log("Error: " + error);
+            alert("Server Error: " + error)
         });
     window.location.href = "./index.html";
     alert("Success");
@@ -104,22 +114,13 @@ async function addPost() {
     const myTitle = document.getElementById("postTitleInput").value;
     const mycontent = document.getElementById("postContentInput").value;
     const selfId = JSON.parse(localStorage.getItem("userKey"))["user_id"];
-    const dateNow = (new Date()).toLocaleString('en-IL', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
 
     let postToAdd = {
         user_id: selfId,
         title: myTitle,
         content: mycontent,
-        created_at: dateNow
+        created_at: theDate()
     }
-
-    let myData;
 
     await fetch(url + "posts", {
         method: "POST",
@@ -134,16 +135,40 @@ async function addPost() {
             }
             return res.json()
         })
-        .then(data => {
-            myData = data
+        .catch(error => {
+            alert("Server Error: " + error)
         });
-    let selfAllPosts = JSON.parse(localStorage.getItem("postsId")) || [];
-    selfAllPosts.push(myData["id"])
-    localStorage.setItem("postsId", JSON.stringify(selfAllPosts))
+    alert("Success!");
 }
 
-function addComment(postIdx) {
-    let selfcontent;
+async function addComment(postIdx) {
+    const selfcontent = document.getElementById("post-input-" + postIdx).value;
+    const selfId = JSON.parse(localStorage.getItem("userKey"))["user_id"];
+
+    const commentToAdd = {
+        post_id: postIdx,
+        user_id: selfId,
+        content: selfcontent,
+        created_at: theDate()
+    };
+
+    await fetch(url + "comments", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(commentToAdd)
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Internet Error")
+            }
+            return res.json()
+        })
+        .catch(error => {
+            alert("Server Error: " + error)
+        });
+    alert("Success!");
 }
 
 function editPost(commentidx) {
@@ -155,7 +180,11 @@ function deletePost(postIdx) {
 }
 
 function editComment(commentIdx) {
-    
+
+}
+
+function deleteComment(commentIdx) {
+
 }
 
 async function getUsernameById(userId) {
@@ -170,6 +199,9 @@ async function getUsernameById(userId) {
         .then(data => {
             usersData = data
         })
+        .catch(error => {
+            alert("Server Error: " + error)
+        });
     const user = usersData.find(user => user.id === userId);
     return user ? user.username : null;
 }
@@ -191,6 +223,9 @@ async function displayPosts() {
         })
         .then(data => {
             allPosts = data;
+        })
+        .catch(error => {
+            alert("Server Error: " + error)
         });
 
     await fetch(url + "comments")
@@ -237,6 +272,7 @@ async function displayPosts() {
                 if (selfId == comment["user_id"]) {
                     commentsStr += `
                         <h3 class="comment-header">${await getUsernameById(comment["user_id"])}</h3>
+                        <p class="comment-content">${comment["content"]}</p>
                         <div class="comment-buttons">
                             <button class="edit-comment-button" onclick="editComment('${comment["id"]}')">Edit Comment</button>
                             <button class="delete-comment-button" onclick="deleteComment('${comment["id"]}')">Delete Comment</button>
@@ -246,6 +282,7 @@ async function displayPosts() {
                 } else {
                     commentsStr += `
                         <h3 class="comment-header">${await getUsernameById(comment["user_id"])}</h3>
+                        <p class="comment-content">${comment["content"]}</p>
                         <span class="comment-date">Commended At: ${comment["created_at"]}</span>
                         `
                 }
