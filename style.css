@@ -7,77 +7,94 @@
 
 /* Setting body styles */
 body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    background-color: #f0f2f5;
-    color: #333;
-    padding: 20px;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #282c34;
+    color: #ffffff;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 20px;
 }
 
 main {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 700px;
+    background: #1c1f26;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
     width: 100%;
     transition: all 0.3s ease;
 }
 
-h1, h2 {
+header {
     text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #61dafb;
+}
+
+header h2 {
+    font-size: 1.5em;
+    color: #a8dadc;
     margin-bottom: 20px;
-    color: #222;
 }
 
 button {
     display: inline-block;
-    background: #007BFF;
-    color: #fff;
+    background: #61dafb;
+    color: #282c34;
     border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
+    padding: 15px 40px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 1.2em;
-    margin-top: 10px;
-    transition: background 0.3s ease;
+    margin-top: 20px;
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
 button:hover {
-    background: #0056b3;
+    background: #21a1f1;
+    transform: translateY(-3px);
 }
 
 input, textarea {
     width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    border: none;
+    border-radius: 10px;
     font-size: 1.2em;
+    background: #333844;
+    color: #ffffff;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #8a8f9c;
 }
 
 .post-content {
-    background: #f9f9f9;
-    padding: 20px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background: #333844;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .post-header, .comment-header {
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    color: #333;
+    font-size: 1.6em;
+    margin-bottom: 15px;
+    color: #61dafb;
 }
 
 .post-date, .comment-date {
     font-size: 1em;
-    color: #666;
-    margin-top: 5px;
+    color: #8a8f9c;
+    margin-top: 10px;
 }
 
 .post-buttons, .comment-buttons {
@@ -90,6 +107,13 @@ input, textarea {
     font-size: 1em;
 }
 
+footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9em;
+    color: #8a8f9c;
+}
+
 /* Responsive design */
 @media (max-width: 1024px) {
     body {
@@ -97,13 +121,13 @@ input, textarea {
     }
 
     main {
-        padding: 25px;
+        padding: 30px;
         max-width: 100%;
     }
 
     button {
         font-size: 1.3em;
-        padding: 15px 35px;
+        padding: 15px 30px;
     }
 
     input, textarea {
@@ -111,8 +135,12 @@ input, textarea {
         padding: 15px;
     }
 
-    h1, h2 {
-        font-size: 2em;
+    header h1 {
+        font-size: 2.2em;
+    }
+
+    header h2 {
+        font-size: 1.4em;
     }
 
     .post-header, .comment-header {
@@ -136,12 +164,16 @@ input, textarea {
         padding: 20px;
     }
 
-    h1, h2 {
-        font-size: 2.2em;
+    header h1 {
+        font-size: 2em;
+    }
+
+    header h2 {
+        font-size: 1.3em;
     }
 
     .post-header, .comment-header {
-        font-size: 1.7em;
+        font-size: 1.6em;
     }
 
     .post-date, .comment-date {
