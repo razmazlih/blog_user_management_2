@@ -138,6 +138,7 @@ async function addPost() {
         .catch(error => {
             alert("Server Error: " + error)
         });
+    window.location.href = "./blog.html"
     alert("Success!");
 }
 
@@ -175,16 +176,54 @@ function editPost(commentidx) {
 
 }
 
-function deletePost(postIdx) {
-
+async function deletePost(postIdx) {
+    fetch(url + "posts/" + postIdx, {
+        method: "DELETE",
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Internet Error")
+            }
+            return res.json()
+        })
+        .catch(error => {
+            alert("Error: ", error)
+        });
 }
 
-function editComment(commentIdx) {
-
+async function editComment(commentIdx) {
+    const newComment = {
+        content: prompt("Enter The New Comment")
+    }
+    await fetch(url + "comments/" + commentIdx, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newComment)
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Internet Error");
+            }
+        })
+        .catch(error => {
+            alert("Server Error: " + error);
+        });
 }
 
-function deleteComment(commentIdx) {
-
+async function deleteComment(commentIdx) {
+    await fetch(url + "comments/" + commentIdx, {
+        method: "DELETE",
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Internet Error")
+            }
+        })
+        .catch(error => {
+            alert("Server Error: " + error)
+        })
 }
 
 async function getUsernameById(userId) {
