@@ -27,7 +27,8 @@ async function login() {
         if (userInput == user["username"] || userInput == user["email"]) {
             if (passwordInput == user["password"]) {
                 let keyOfUser = {
-                    user_id: user["id"]
+                    user_id: user["id"],
+                    username: user["username"]
                 }
                 localStorage.setItem("userKey", JSON.stringify(keyOfUser))
                 window.location.href = "./blog.html";
@@ -141,19 +142,122 @@ async function addPost() {
     localStorage.setItem("postsId", JSON.stringify(selfAllPosts))
 }
 
-function addComment() {
+function addComment(postIdx) {
 
 }
 
-function editPost() {
+function editPost(commentidx) {
 
 }
 
-function editComment() {
+function deletePost(postIdx) {
 
 }
 
-function displayPosts() {
+function editComment(commentIdx) {
+    
+}
 
+async function getUsernameById(userId) {
+    let usersData;
+    await fetch(url + "users")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("internet Error")
+            }
+            return res.json()
+        })
+        .then(data => {
+            usersData = data
+        })
+    const user = usersData.find(user => user.id === userId);
+    return user ? user.username : null;
+}
+
+
+async function displayPosts() {
+    const divAllBlogs = document.getElementById("allBlogs");
+    const myStorge = JSON.parse(localStorage.getItem("userKey"));
+    const selfId = myStorge["user_id"];
+    const selfUsername = myStorge["username"];
+    let allPosts;
+    let allComments;
+
+    await fetch(url + "posts")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Internet Error");
+            }
+            return res.json()
+        })
+        .then(data => {
+            allPosts = data;
+        });
+
+    await fetch(url + "comments")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Internet Error");
+            }
+            return res.json()
+        })
+        .then(data => {
+            allComments = data;
+        });
+
+    let finalStr = "";
+
+    for (let postsIdx = 0; postsIdx < allPosts.length; postsIdx++) {
+        const post = allPosts[postsIdx];
+        let startPost = `
+        <h2 class="post-header">${post["title"]}</h2>
+        <p class="post-content">${post["content"]}</p>
+        <button class="post-button" onclick="addComment('${post["id"]}')">Add Comment</button>
+        `;
+        let endPost = "";
+        if (selfId == post["user_id"]) {
+            endPost += `
+            <div class="post-buttons">
+                <button class="post-button" onclick="editPost('${post["id"]}')">Edit Post</button>
+                <button class="post-button" onclick="deletePost('${post["id"]}')">Delete Post</button>
+            </div>
+            `
+        }
+        endPost += `<p class="post-date">Posted At: ${post["created_at"]}</p>`
+        let commentsStr = "";
+        for (let commentsIdx = 0; commentsIdx < allComments.length; commentsIdx++) {
+            const comment = allComments[commentsIdx];
+
+            if (post["id"] == comment["post_id"]) {
+
+                if (selfId == comment["user_id"]) {
+                    commentsStr += `
+                        <h3 class="comment-header">${await getUsernameById(comment["user_id"])}</h3>
+                        <div class="comment-buttons">
+                            <button class="comment-button" onclick="editComment('${comment["id"]}')">Edit Comment</button>
+                            <button class="comment-button" onclick="deleteComment('${comment["id"]}')">Delete Comment</button>
+                        </div>
+                        <span class="comment-date">Commended At: ${comment["created_at"]}</span>
+                        `
+                } else {
+                    commentsStr += `
+                        <h3 class="comment-header">${await getUsernameById(comment["user_id"])}</h3>
+                        <span class="comment-date">Commended At: ${comment["created_at"]}</span>
+                        `
+                }
+                
+            }
+        }
+        finalStr += `
+            <div class="post-conteiner">${startPost + endPost}</div>
+            <div class="comments-conteiner">${commentsStr}</div>
+            `;
+    }
+
+    divAllBlogs.innerHTML = finalStr;
+}
+
+if (window.location.pathname.endsWith("blog.html")) {
+    displayPosts()
 }
 
