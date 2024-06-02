@@ -143,7 +143,7 @@ async function addPost() {
 }
 
 function addComment(postIdx) {
-
+    let selfcontent;
 }
 
 function editPost(commentidx) {
@@ -209,16 +209,21 @@ async function displayPosts() {
     for (let postsIdx = 0; postsIdx < allPosts.length; postsIdx++) {
         const post = allPosts[postsIdx];
         let startPost = `
-            <h2 class="post-header">${post["title"]}</h2>
-            <p class="post-content">${post["content"]}</p>
-            <button class="post-button" onclick="addComment('${post["id"]}')">Add Comment</button>
+            <div class="post-content">
+                <h2 class="post-header">${post["title"]}</h2>
+                <p class="post-content">${post["content"]}</p>
+            </div>
+            <div class="post-add-comment">
+                <input id="post-input-${post["id"]}">
+                <button class="add-post-button" onclick="addComment('${post["id"]}')">Add Comment</button>
+            </div>
             `;
         let endPost = "";
         if (selfId == post["user_id"]) {
             endPost += `
                 <div class="post-buttons">
-                    <button class="post-button" onclick="editPost('${post["id"]}')">Edit Post</button>
-                    <button class="post-button" onclick="deletePost('${post["id"]}')">Delete Post</button>
+                    <button class="edit-post-button" onclick="editPost('${post["id"]}')">Edit Post</button>
+                    <button class="delete-post-button" onclick="deletePost('${post["id"]}')">Delete Post</button>
                 </div>
                 `
         }
@@ -233,8 +238,8 @@ async function displayPosts() {
                     commentsStr += `
                         <h3 class="comment-header">${await getUsernameById(comment["user_id"])}</h3>
                         <div class="comment-buttons">
-                            <button class="comment-button" onclick="editComment('${comment["id"]}')">Edit Comment</button>
-                            <button class="comment-button" onclick="deleteComment('${comment["id"]}')">Delete Comment</button>
+                            <button class="edit-comment-button" onclick="editComment('${comment["id"]}')">Edit Comment</button>
+                            <button class="delete-comment-button" onclick="deleteComment('${comment["id"]}')">Delete Comment</button>
                         </div>
                         <span class="comment-date">Commended At: ${comment["created_at"]}</span>
                         `
