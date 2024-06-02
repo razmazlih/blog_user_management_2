@@ -231,3 +231,12 @@ async function displayPosts() {
 if (window.location.pathname.endsWith("blog.html")) {
     displayPosts();
 }
+
+async function fetchData(endpoint, options = {}) {
+    const response = await fetch(url + endpoint, {
+        ...options,
+        credentials: 'include' // Include credentials in the request
+    });
+    if (!response.ok) throw new Error("Internet Problem");
+    return response.json();
+}
