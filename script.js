@@ -27,7 +27,7 @@ async function login() {
         if (userInput == user["username"] || userInput == user["email"]) {
             if (passwordInput == user["password"]) {
                 let keyOfUser = {
-                    user_id: user["id"],
+                    user_id: user["id"]
                 }
                 localStorage.setItem("userKey", JSON.stringify(keyOfUser))
                 window.location.href = "./blog.html";
@@ -96,11 +96,49 @@ async function signUp() {
             console.log("Error: " + error);
         });
     window.location.href = "./index.html";
-    alert("Success")
+    alert("Success");
 }
 
-function addPost() {
+async function addPost() {
+    const myTitle = document.getElementById("postTitleInput").value;
+    const mycontent = document.getElementById("postContentInput").value;
+    const selfId = JSON.parse(localStorage.getItem("userKey"))["user_id"];
+    const dateNow = (new Date()).toLocaleString('en-IL', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 
+    let postToAdd = {
+        user_id: selfId,
+        title: myTitle,
+        content: mycontent,
+        created_at: dateNow
+    }
+
+    let myData;
+
+    await fetch(url + "posts", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postToAdd)
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Internet Error");
+            }
+            return res.json()
+        })
+        .then(data => {
+            myData = data
+        });
+    let selfAllPosts = JSON.parse(localStorage.getItem("postsId")) || [];
+    selfAllPosts.push(myData["id"])
+    localStorage.setItem("postsId", JSON.stringify(selfAllPosts))
 }
 
 function addComment() {

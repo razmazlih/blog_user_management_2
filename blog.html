@@ -11,9 +11,11 @@
     <main>
         <h1>Header</h1>
         <h2>Blog</h2>
-        <div id="addNewPostContainer"><button onclick="addNewPost()">Add New Post</button></div>
+        <div id="addNewPostContainer">
+            <a href="./add_post.html"><button>Add New Post</button></a>
+        </div>
         <div id="allBlogs">Loading...</div>
-        <a href="./index.html"><button>Log Out</button></a>
+        <a href="./index.html"><button onclick="localStorage.clear()">Log Out</button></a>
     </main>
 
 
