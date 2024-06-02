@@ -133,13 +133,13 @@ async function addPost() {
             if (!res.ok) {
                 throw new Error("Internet Error");
             }
+            window.location.href = "./blog.html"
+            alert("Success!");
             return res.json()
         })
         .catch(error => {
             alert("Server Error: " + error)
         });
-    window.location.href = "./blog.html"
-    alert("Success!");
 }
 
 async function addComment(postIdx) {
@@ -164,12 +164,12 @@ async function addComment(postIdx) {
             if (!res.ok) {
                 throw new Error("Internet Error")
             }
+            alert("Success!");
             return res.json()
         })
         .catch(error => {
             alert("Server Error: " + error)
         });
-    alert("Success!");
 }
 
 function editPost(commentidx) {
