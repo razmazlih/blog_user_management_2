@@ -179,7 +179,6 @@ async function displayPosts() {
     const divAllBlogs = document.getElementById("allBlogs");
     const myStorge = JSON.parse(localStorage.getItem("userKey"));
     const selfId = myStorge["user_id"];
-    const selfUsername = myStorge["username"];
     let allPosts;
     let allComments;
 
@@ -210,18 +209,18 @@ async function displayPosts() {
     for (let postsIdx = 0; postsIdx < allPosts.length; postsIdx++) {
         const post = allPosts[postsIdx];
         let startPost = `
-        <h2 class="post-header">${post["title"]}</h2>
-        <p class="post-content">${post["content"]}</p>
-        <button class="post-button" onclick="addComment('${post["id"]}')">Add Comment</button>
-        `;
+            <h2 class="post-header">${post["title"]}</h2>
+            <p class="post-content">${post["content"]}</p>
+            <button class="post-button" onclick="addComment('${post["id"]}')">Add Comment</button>
+            `;
         let endPost = "";
         if (selfId == post["user_id"]) {
             endPost += `
-            <div class="post-buttons">
-                <button class="post-button" onclick="editPost('${post["id"]}')">Edit Post</button>
-                <button class="post-button" onclick="deletePost('${post["id"]}')">Delete Post</button>
-            </div>
-            `
+                <div class="post-buttons">
+                    <button class="post-button" onclick="editPost('${post["id"]}')">Edit Post</button>
+                    <button class="post-button" onclick="deletePost('${post["id"]}')">Delete Post</button>
+                </div>
+                `
         }
         endPost += `<p class="post-date">Posted At: ${post["created_at"]}</p>`
         let commentsStr = "";
@@ -245,7 +244,6 @@ async function displayPosts() {
                         <span class="comment-date">Commended At: ${comment["created_at"]}</span>
                         `
                 }
-                
             }
         }
         finalStr += `
