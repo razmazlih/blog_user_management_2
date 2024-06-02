@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/"
+const url = "https://blog-user-management-2.onrender.com/"
 
 function theDate() {
     const nowTime = (new Date()).toLocaleString('en-IL', {
