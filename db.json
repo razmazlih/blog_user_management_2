@@ -2,13 +2,13 @@
   "users": [
     {
       "id": "1",
-      "username": "raz",
+      "username": "Ron121",
       "email": "raz@gmail.com",
       "password": "123"
     },
     {
       "id": "2",
-      "username": "user2",
+      "username": "Dan_MS55",
       "email": "user2@example.com",
       "password": "hashed_password2"
     }
