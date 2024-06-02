@@ -287,10 +287,6 @@ async function displayPosts() {
                 <h2 class="post-header">${post["title"]}</h2>
                 <p class="post-content">${post["content"]}</p>
             </div>
-            <div class="post-add-comment">
-                <input id="post-input-${post["id"]}">
-                <button class="add-post-button" onclick="addComment('${post["id"]}')">Add Comment</button>
-            </div>
             `;
         let endPost = "";
         if (selfId == post["user_id"]) {
@@ -327,6 +323,12 @@ async function displayPosts() {
                 }
             }
         }
+        commentsStr += `
+        <div class="post-add-comment">
+        <input id="post-input-${post["id"]}">
+        <button class="add-post-button" onclick="addComment('${post["id"]}')">Add Comment</button>
+    </div>
+        `
         finalStr += `
             <div class="post-conteiner">${startPost + endPost}</div>
             <div class="comments-conteiner">${commentsStr}</div>

@@ -1,0 +1,150 @@
+/* Resetting some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Setting body styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+main {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+button {
+    display: inline-block;
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.2em;
+}
+
+.post-content {
+    background: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.post-header, .comment-header {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.post-date, .comment-date {
+    font-size: 1em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.post-buttons, .comment-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.post-buttons button, .comment-buttons button {
+    margin-left: 10px;
+    font-size: 1em;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    body {
+        padding: 10px;
+    }
+
+    main {
+        padding: 25px;
+        max-width: 100%;
+    }
+
+    button {
+        font-size: 1.3em;
+        padding: 15px 35px;
+    }
+
+    input, textarea {
+        font-size: 1.3em;
+        padding: 15px;
+    }
+
+    h1, h2 {
+        font-size: 2em;
+    }
+
+    .post-header, .comment-header {
+        font-size: 1.5em;
+    }
+
+    .post-date, .comment-date {
+        font-size: 1.1em;
+    }
+}
+
+/* Larger fonts for very small screens */
+@media (max-width: 480px) {
+    button {
+        font-size: 1.4em;
+        padding: 20px 40px;
+    }
+
+    input, textarea {
+        font-size: 1.4em;
+        padding: 20px;
+    }
+
+    h1, h2 {
+        font-size: 2.2em;
+    }
+
+    .post-header, .comment-header {
+        font-size: 1.7em;
+    }
+
+    .post-date, .comment-date {
+        font-size: 1.2em;
+    }
+}
