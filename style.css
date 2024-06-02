@@ -26,6 +26,10 @@ main {
     max-width: 800px;
     width: 100%;
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
 }
 
 header {
@@ -34,12 +38,12 @@ header {
 }
 
 header h1 {
-    font-size: 2.5em;
+    font-size: 2.5em; /* Adjusted for larger text */
     color: #61dafb;
 }
 
 header h2 {
-    font-size: 1.5em;
+    font-size: 1.5em; /* Adjusted for larger text */
     color: #a8dadc;
     margin-bottom: 20px;
 }
@@ -49,10 +53,10 @@ button {
     background: #61dafb;
     color: #282c34;
     border: none;
-    padding: 15px 40px;
+    padding: 15px 40px; /* Adjusted for larger padding */
     border-radius: 25px;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.2em; /* Adjusted for larger text */
     margin-top: 20px;
     transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -64,11 +68,11 @@ button:hover {
 
 input, textarea {
     width: 100%;
-    padding: 20px;
-    margin: 15px 0;
+    padding: 20px; /* Adjusted for larger padding */
+    margin: 15px 0; /* Adjusted for larger margin */
     border: none;
     border-radius: 10px;
-    font-size: 1.2em;
+    font-size: 1.5em; /* Adjusted for larger text */
     background: #333844;
     color: #ffffff;
 }
@@ -86,13 +90,13 @@ input::placeholder, textarea::placeholder {
 }
 
 .post-header, .comment-header {
-    font-size: 1.6em;
+    font-size: 1.8em; /* Adjusted for larger text */
     margin-bottom: 15px;
     color: #61dafb;
 }
 
 .post-date, .comment-date {
-    font-size: 1em;
+    font-size: 1.2em; /* Adjusted for larger text */
     color: #8a8f9c;
     margin-top: 10px;
 }
@@ -104,13 +108,13 @@ input::placeholder, textarea::placeholder {
 
 .post-buttons button, .comment-buttons button {
     margin-left: 10px;
-    font-size: 1em;
+    font-size: 1.2em; /* Adjusted for larger text */
 }
 
 footer {
     text-align: center;
     margin-top: 40px;
-    font-size: 0.9em;
+    font-size: 1.2em; /* Adjusted for larger text */
     color: #8a8f9c;
 }
 
@@ -123,60 +127,100 @@ footer {
     main {
         padding: 30px;
         max-width: 100%;
+        min-height: 100vh;
     }
 
     button {
-        font-size: 1.3em;
+        font-size: 1.7em; /* Adjusted for larger text */
         padding: 15px 30px;
     }
 
     input, textarea {
-        font-size: 1.3em;
-        padding: 15px;
+        font-size: 1.7em; /* Adjusted for larger text */
+        padding: 20px;
     }
 
     header h1 {
-        font-size: 2.2em;
+        font-size: 3em; /* Adjusted for larger text */
     }
 
     header h2 {
-        font-size: 1.4em;
+        font-size: 2em; /* Adjusted for larger text */
     }
 
     .post-header, .comment-header {
-        font-size: 1.5em;
+        font-size: 1.9em; /* Adjusted for larger text */
     }
 
     .post-date, .comment-date {
-        font-size: 1.1em;
+        font-size: 1.4em; /* Adjusted for larger text */
     }
 }
 
 /* Larger fonts for very small screens */
 @media (max-width: 480px) {
     button {
-        font-size: 1.4em;
-        padding: 20px 40px;
+        font-size: 2.5em; /* Adjusted for much larger text */
+        padding: 25px 50px; /* Adjusted for larger padding */
     }
 
     input, textarea {
-        font-size: 1.4em;
-        padding: 20px;
+        font-size: 2.5em; /* Adjusted for much larger text */
+        padding: 25px; /* Adjusted for larger padding */
     }
 
     header h1 {
-        font-size: 2em;
+        font-size: 3.5em; /* Adjusted for much larger text */
     }
 
     header h2 {
-        font-size: 1.3em;
+        font-size: 2.8em; /* Adjusted for much larger text */
     }
 
     .post-header, .comment-header {
-        font-size: 1.6em;
+        font-size: 2.8em; /* Adjusted for much larger text */
     }
 
     .post-date, .comment-date {
-        font-size: 1.2em;
+        font-size: 2em; /* Adjusted for much larger text */
+    }
+}
+
+/* Styles for larger screens, such as foldable phones when opened */
+@media (min-width: 1200px) {
+    body {
+        padding: 20px;
+    }
+
+    main {
+        padding: 50px;
+        max-width: 1000px;
+        min-height: 100vh;
+    }
+
+    button {
+        font-size: 2em; /* Adjusted for larger text */
+        padding: 30px 60px; /* Adjusted for larger padding */
+    }
+
+    input, textarea {
+        font-size: 2em; /* Adjusted for larger text */
+        padding: 30px; /* Adjusted for larger padding */
+    }
+
+    header h1 {
+        font-size: 3.5em; /* Adjusted for larger text */
+    }
+
+    header h2 {
+        font-size: 2.5em; /* Adjusted for larger text */
+    }
+
+    .post-header, .comment-header {
+        font-size: 2.2em; /* Adjusted for larger text */
+    }
+
+    .post-date, .comment-date {
+        font-size: 1.6em; /* Adjusted for larger text */
     }
 }

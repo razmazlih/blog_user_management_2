@@ -1,56 +1,42 @@
-const url = "https://blog-user-management-2.onrender.com/"
+const url = "https://blog-user-management-2.onrender.com/";
 
 function theDate() {
-    const nowTime = (new Date()).toLocaleString('en-IL', {
+    return (new Date()).toLocaleString('en-IL', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
     });
-    return nowTime;
 }
-// return all users
+
+// Fetch helper function
+async function fetchData(endpoint, options = {}) {
+    const response = await fetch(url + endpoint, options);
+    if (!response.ok) throw new Error("Internet Problem");
+    return response.json();
+}
+
 async function getUsers() {
-    let allUsers;
-    await fetch(url + "users").then(res => {
-        if (!res.ok) {
-            throw new Error("Internet Problem")
-        }
-        return res.json()
-    })
-        .then(data => {
-            allUsers = data
-        })
-        .catch(error => {
-            alert("Server Error: " + error)
-        });
-    return allUsers;
+    try {
+        return await fetchData("users");
+    } catch (error) {
+        alert("Server Error: " + error);
+    }
 }
 
 async function login() {
-    const allUsers = await getUsers()
+    const allUsers = await getUsers();
     const userInput = document.getElementById("usernameInputLogin").value;
     const passwordInput = document.getElementById("passwordInputLogin").value;
-    for (let i = 0; i < allUsers.length; i++) {
-        const user = allUsers[i];
-        if (userInput == user["username"] || userInput == user["email"]) {
-            if (passwordInput == user["password"]) {
-                let keyOfUser = {
-                    user_id: user["id"],
-                    username: user["username"]
-                }
-                localStorage.setItem("userKey", JSON.stringify(keyOfUser))
-                window.location.href = "./blog.html";
-                return
-            } else {
-                alert("Wrong Password!")
-                return
-            }
-        }
-    }
-    alert("User Not Found!")
+    const user = allUsers.find(user => user.username === userInput || user.email === userInput);
 
+    if (user && user.password === passwordInput) {
+        localStorage.setItem("userKey", JSON.stringify({ user_id: user.id, username: user.username }));
+        window.location.href = "./blog.html";
+    } else {
+        alert(user ? "Wrong Password!" : "User Not Found!");
+    }
 }
 
 async function signUp() {
@@ -60,91 +46,62 @@ async function signUp() {
     const passwordInput = document.getElementById("passwordInputSignIn").value;
     const passAgainInput = document.getElementById("passwordInputSignInVari").value;
 
-    for (let i = 0; i < allUsers.length; i++) {
-        const user = allUsers[i];
-        const validEmail = user["email"] === emailInput;
-        const validUsername = user["username"] === usernameInput;
-        if (validEmail) {
-            alert("Email taken. Please choose another.");
-            return;
-        }
-        if (validUsername) {
-            alert("Username taken. Please choose another.");
-            return;
-        }
+    if (allUsers.some(user => user.email === emailInput)) {
+        alert("Email taken. Please choose another.");
+        return;
     }
-
+    if (allUsers.some(user => user.username === usernameInput)) {
+        alert("Username taken. Please choose another.");
+        return;
+    }
     if (passwordInput !== passAgainInput) {
         alert("Passwords do not match. Please try again.");
         return;
     }
 
-    const newUser = {
-        username: usernameInput,
-        email: emailInput,
-        password: passwordInput
-    };
+    const newUser = { username: usernameInput, email: emailInput, password: passwordInput };
 
-    let myData;
-
-    await fetch(url + "users", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newUser)
-    })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Internet Problem");
-            }
-            return res.json();
-        })
-        .then(data => {
-            myData = data;
-        })
-        .catch(error => {
-            alert("Server Error: " + error)
+    try {
+        await fetchData("users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newUser)
         });
-    window.location.href = "./index.html";
-    alert("Success");
+        alert("Success");
+        window.location.href = "./index.html";
+    } catch (error) {
+        alert("Server Error: " + error);
+    }
 }
 
 async function addPost() {
     const myTitle = document.getElementById("postTitleInput").value;
     const mycontent = document.getElementById("postContentInput").value;
-    const selfId = JSON.parse(localStorage.getItem("userKey"))["user_id"];
+    const selfId = JSON.parse(localStorage.getItem("userKey")).user_id;
 
-    let postToAdd = {
+    const postToAdd = {
         user_id: selfId,
         title: myTitle,
         content: mycontent,
         created_at: theDate()
-    }
+    };
 
-    await fetch(url + "posts", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(postToAdd)
-    })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Internet Error");
-            }
-            window.location.href = "./blog.html"
-            alert("Success!");
-            return res.json()
-        })
-        .catch(error => {
-            alert("Server Error: " + error)
+    try {
+        await fetchData("posts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(postToAdd)
         });
+        alert("Success!");
+        window.location.href = "./blog.html";
+    } catch (error) {
+        alert("Server Error: " + error);
+    }
 }
 
 async function addComment(postIdx) {
     const selfcontent = document.getElementById("post-input-" + postIdx).value;
-    const selfId = JSON.parse(localStorage.getItem("userKey"))["user_id"];
+    const selfId = JSON.parse(localStorage.getItem("userKey")).user_id;
 
     const commentToAdd = {
         post_id: postIdx,
@@ -153,192 +110,124 @@ async function addComment(postIdx) {
         created_at: theDate()
     };
 
-    await fetch(url + "comments", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(commentToAdd)
-    })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Internet Error")
-            }
-            alert("Success!");
-            return res.json()
-        })
-        .catch(error => {
-            alert("Server Error: " + error)
+    try {
+        await fetchData("comments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(commentToAdd)
         });
-}
-
-function editPost(commentidx) {
-
+        alert("Success!");
+    } catch (error) {
+        alert("Server Error: " + error);
+    }
 }
 
 async function deletePost(postIdx) {
-    fetch(url + "posts/" + postIdx, {
-        method: "DELETE",
-    })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Internet Error")
-            }
-            return res.json()
-        })
-        .catch(error => {
-            alert("Error: ", error)
-        });
+    try {
+        await fetchData("posts/" + postIdx, { method: "DELETE" });
+    } catch (error) {
+        alert("Error: " + error);
+    }
 }
 
 async function editComment(commentIdx) {
-    const newComment = {
-        content: prompt("Enter The New Comment")
-    }
-    await fetch(url + "comments/" + commentIdx, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newComment)
-    })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Internet Error");
-            }
-        })
-        .catch(error => {
-            alert("Server Error: " + error);
+    const newContent = prompt("Enter The New Comment");
+    if (!newContent) return;
+
+    const updatedComment = { content: newContent };
+
+    try {
+        await fetchData("comments/" + commentIdx, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedComment)
         });
+    } catch (error) {
+        alert("Server Error: " + error);
+    }
 }
 
 async function deleteComment(commentIdx) {
-    await fetch(url + "comments/" + commentIdx, {
-        method: "DELETE",
-    })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Internet Error")
-            }
-        })
-        .catch(error => {
-            alert("Server Error: " + error)
-        })
+    try {
+        await fetchData("comments/" + commentIdx, { method: "DELETE" });
+    } catch (error) {
+        alert("Server Error: " + error);
+    }
 }
 
 async function getUsernameById(userId) {
-    let usersData;
-    await fetch(url + "users")
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("internet Error")
-            }
-            return res.json()
-        })
-        .then(data => {
-            usersData = data
-        })
-        .catch(error => {
-            alert("Server Error: " + error)
-        });
+    const usersData = await getUsers();
     const user = usersData.find(user => user.id === userId);
     return user ? user.username : null;
 }
 
-
 async function displayPosts() {
     const divAllBlogs = document.getElementById("allBlogs");
-    const myStorge = JSON.parse(localStorage.getItem("userKey"));
-    const selfId = myStorge["user_id"];
-    let allPosts;
-    let allComments;
+    const { user_id: selfId } = JSON.parse(localStorage.getItem("userKey"));
+    let allPosts, allComments;
 
-    await fetch(url + "posts")
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Internet Error");
-            }
-            return res.json()
-        })
-        .then(data => {
-            allPosts = data;
-        })
-        .catch(error => {
-            alert("Server Error: " + error)
-        });
-
-    await fetch(url + "comments")
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Internet Error");
-            }
-            return res.json()
-        })
-        .then(data => {
-            allComments = data;
-        });
+    try {
+        allPosts = await fetchData("posts");
+        allComments = await fetchData("comments");
+    } catch (error) {
+        alert("Server Error: " + error);
+        return;
+    }
 
     let finalStr = "";
 
-    for (let postsIdx = 0; postsIdx < allPosts.length; postsIdx++) {
-        const post = allPosts[postsIdx];
+    for (const post of allPosts) {
         let startPost = `
             <div class="post-content">
-                <h2 class="post-header">${post["title"]}</h2>
-                <p class="post-content">${post["content"]}</p>
+                <h2 class="post-header">${post.title}</h2>
+                <p class="post-content">${post.content}</p>
             </div>
-            `;
+        `;
         let endPost = "";
-        if (selfId == post["user_id"]) {
+
+        if (selfId == post.user_id) {
             endPost += `
                 <div class="post-buttons">
-                    <button class="edit-post-button" onclick="editPost('${post["id"]}')">Edit Post</button>
-                    <button class="delete-post-button" onclick="deletePost('${post["id"]}')">Delete Post</button>
+                    <button class="edit-post-button" onclick="editPost('${post.id}')">Edit Post</button>
+                    <button class="delete-post-button" onclick="deletePost('${post.id}')">Delete Post</button>
                 </div>
-                `
+            `;
         }
-        endPost += `<p class="post-date">Posted At: ${post["created_at"]}</p>`
+        endPost += `<p class="post-date">Posted At: ${post.created_at}</p>`;
+
         let commentsStr = "";
-        for (let commentsIdx = 0; commentsIdx < allComments.length; commentsIdx++) {
-            const comment = allComments[commentsIdx];
-
-            if (post["id"] == comment["post_id"]) {
-
-                if (selfId == comment["user_id"]) {
+        for (const comment of allComments) {
+            if (post.id == comment.post_id) {
+                commentsStr += `
+                    <h3 class="comment-header">${await getUsernameById(comment.user_id)}</h3>
+                    <p class="comment-content">${comment.content}</p>
+                `;
+                if (selfId == comment.user_id) {
                     commentsStr += `
-                        <h3 class="comment-header">${await getUsernameById(comment["user_id"])}</h3>
-                        <p class="comment-content">${comment["content"]}</p>
                         <div class="comment-buttons">
-                            <button class="edit-comment-button" onclick="editComment('${comment["id"]}')">Edit Comment</button>
-                            <button class="delete-comment-button" onclick="deleteComment('${comment["id"]}')">Delete Comment</button>
+                            <button class="edit-comment-button" onclick="editComment('${comment.id}')">Edit Comment</button>
+                            <button class="delete-comment-button" onclick="deleteComment('${comment.id}')">Delete Comment</button>
                         </div>
-                        <span class="comment-date">Commended At: ${comment["created_at"]}</span>
-                        `
-                } else {
-                    commentsStr += `
-                        <h3 class="comment-header">${await getUsernameById(comment["user_id"])}</h3>
-                        <p class="comment-content">${comment["content"]}</p>
-                        <span class="comment-date">Commended At: ${comment["created_at"]}</span>
-                        `
+                    `;
                 }
+                commentsStr += `<span class="comment-date">Commended At: ${comment.created_at}</span>`;
             }
         }
         commentsStr += `
-        <div class="post-add-comment">
-        <input id="post-input-${post["id"]}">
-        <button class="add-post-button" onclick="addComment('${post["id"]}')">Add Comment</button>
-    </div>
-        `
+            <div class="post-add-comment">
+                <input id="post-input-${post.id}">
+                <button class="add-post-button" onclick="addComment('${post.id}')">Add Comment</button>
+            </div>
+        `;
         finalStr += `
             <div class="post-conteiner">${startPost + endPost}</div>
             <div class="comments-conteiner">${commentsStr}</div>
-            `;
+        `;
     }
 
     divAllBlogs.innerHTML = finalStr;
 }
 
 if (window.location.pathname.endsWith("blog.html")) {
-    displayPosts()
+    displayPosts();
 }
-
