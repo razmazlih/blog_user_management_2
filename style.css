@@ -127,25 +127,25 @@ footer {
     main {
         padding: 30px;
         max-width: 100%;
-        min-height: 100vh;
+        min-height: 40vh;
     }
 
     button {
-        font-size: 1.7em; /* Adjusted for larger text */
+        font-size: 2.5em; /* Adjusted for larger text */
         padding: 15px 30px;
     }
 
     input, textarea {
-        font-size: 1.7em; /* Adjusted for larger text */
+        font-size: 2.5em; /* Adjusted for larger text */
         padding: 20px;
     }
 
     header h1 {
-        font-size: 3em; /* Adjusted for larger text */
+        font-size: 5em; /* Adjusted for larger text */
     }
 
     header h2 {
-        font-size: 2em; /* Adjusted for larger text */
+        font-size: 3em; /* Adjusted for larger text */
     }
 
     .post-header, .comment-header {
@@ -195,7 +195,7 @@ footer {
     main {
         padding: 50px;
         max-width: 1000px;
-        min-height: 50vh;
+        min-height: 100vh;
     }
 
     button {
