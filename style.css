@@ -195,7 +195,7 @@ footer {
     main {
         padding: 50px;
         max-width: 1000px;
-        min-height: 100vh;
+        min-height: 50vh;
     }
 
     button {
